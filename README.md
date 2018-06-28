@@ -14,4 +14,6 @@ Next, I wrote a simple program (name_age.py) which asks for a name and the sex (
 
 I wanted to compile this information for all names in the SSA data so long as the name is relevant enough (i.e. > 400,000 people all time). Then filter this list to find those names which are "characteristic" of different generations.  I wrote a program which does this called demographics.py. Check out the header comments of demographics.py to see more details about what the program does. In essence, it compiles all SSA data (baby names and actuarial table), patches both of them, and then runs statistics on a subset based on popularity (of your choosing). The results binned by demographics are simply printed to the terminal.
 
+And for my (hypothetical) ad campaign for 90's memorabilia, I should consider: "Jennifer", "Lisa", "Kimberly", "Mark", "Jason", and/or "Jefferey".  
+
 Feel free to take a look, test the code, and please let me know if you have any suggestions for improving the project!
