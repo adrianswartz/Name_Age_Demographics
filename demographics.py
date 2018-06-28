@@ -4,21 +4,23 @@
 
 # This program does the following:
 # 1) Imports all SSA baby names from files into a dictionary.
-#    The dictionary is split between Male and Female throughout the program.
-# 2) Identifies the number of unique names in the SSA database
-# 3) Patches this dictionary with zeros to fill in missing data.
+#    Two dictionaries (M and F) are used throughout the program.
+# 2) Identifies the number of unique names in the SSA database 
+#    and creates a dictionary of all unique names
+# 3) Patches the SSA names dictionaries to fill in missing data.
 # 4) Imports the 2014 actuarial table generated using get_actdata_2014.py
 #    and calculates the number expected to be alive in 2017.
 # 5) Asks the user for a threshold cutoff value.
 #    Only names with a total number of people ever born
-#    exceeding the threshold will be looked at.
+#    exceeding the threshold will be looked at.  
+#    In the future, this step could be done before patching the dictionary to save time
 # 6) The program then proceeds with the "Main analysis" which examines all
 #    above threshold names and runs the statistics for those expected to be alive.
 # 7) These names are then placed in to different demographics
 #    based on their median value
 # 8) This set is filtered for narrow distributions (std dev < 15 years)
 #    and which can be well described by a single peak (kurtosis > 0)
-# 9) This subset of names in each demographic are printed to the screen.
+# 9) This subset of names in each demographic are sorted by rank and printed to the screen.
 
 #Adrian Swartz June 2018
 
