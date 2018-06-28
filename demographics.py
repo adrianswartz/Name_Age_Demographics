@@ -1,5 +1,6 @@
-#Demographics analyais based on SSA baby names
+#Demographics analysis based on SSA baby names
 #between 1880 and 2017 and 2014 actuarial table.
+#Results only include those who registered with SSA at birth
 
 # This program does the following:
 # 1) Imports all SSA baby names from files into a dictionary.
@@ -17,7 +18,7 @@
 #    based on their median value
 # 8) This set is filtered for narrow distributions (std dev < 15 years)
 #    and which can be well described by a single peak (kurtosis > 0)
-# 9) This subset of names in each demographic are printed to the screen for now.
+# 9) This subset of names in each demographic are printed to the screen.
 
 #Adrian Swartz June 2018
 
@@ -269,7 +270,8 @@ def demographics_filter(demo_groups):
 
     return filtered_demo_groups
         
-
+def Last(a):
+  return a[-1]
     
 def main():
 
@@ -354,7 +356,7 @@ def main():
 
             
             mean, median, stddev, sk, kurt = get_stats(number_alive, years)
-            results_dict_F[name] = (mean, median, stddev, sk, kurt)
+            results_dict_F[name] = (mean, median, stddev, sk, kurt, total)
     
 
     print
@@ -384,7 +386,7 @@ def main():
 
             
             mean, median, stddev, sk, kurt = get_stats(number_alive, years)
-            results_dict_M[name] = (mean, median, stddev, sk, kurt)
+            results_dict_M[name] = (mean, median, stddev, sk, kurt, total)
         
 
 
@@ -412,6 +414,8 @@ def main():
     # 2) AND best described by one peak, kurtosis > 0.
 
     print
+    print "Filter demographics for those with a tight distribution."
+    print "Standard deviation < 15 years and Kurtosis > 0."
     print "Filtered results: "
     print
     print "Number of characteristic names for each demographic:"
@@ -422,24 +426,52 @@ def main():
     print "Male: "
     print "Gen. Z: %d, Millennials: %d, Gen X: %d, Baby Boomers:  %d" %(len(filtered_groups_M[0]), len(filtered_groups_M[1]), len(filtered_groups_M[2]), len(filtered_groups_M[3]))
     print "Silent Gen.: %d, Greatest Gen: %d, Dead Gen.: %d" %(len(filtered_groups_M[4]), len(filtered_groups_M[5]), len(filtered_groups_M[6]))
-    print 
-
-    print "\033[1;31mShow all well-defined millenials!\033[1;m"
-
-    print "Female list: "
-    for name in filtered_groups_F[1].keys():
-        data_tuple = filtered_groups_F[1][name]
-        median_age = int(max(years)+1 - data_tuple[1])
-        print name, ",", median_age, "years old"
-
-    print
-    print "Male list: "
-    for name in filtered_groups_M[1].keys():
-        data_tuple = filtered_groups_M[1][name]
-        median_age = int(max(years) - data_tuple[1])
-        print name, ",", median_age, "years old"
 
 
+    ##Print the results
+    i=0
+    while i < len(filtered_groups_F):
+        print
+        print
+        if i==0:
+            print "\033[1;31mCharacteristic Gen. Z names!\033[1;m"
+        elif i==1:
+            print "\033[1;31mCharacteristic Millennial names!\033[1;m"
+        elif i==2:
+            print "\033[1;31mCharacteristic Gen. X names!\033[1;m"
+        elif i==3:
+            print "\033[1;31mCharacteristic Baby Boomer names!\033[1;m"
+        elif i==4:
+            print "\033[1;31mCharacteristic Silent Gen. names!\033[1;m"
+        elif i==5:
+            print "\033[1;31mCharacteristic Greatest Gen. names!\033[1;m"
+        elif i==6:
+            print "\033[1;31mCharacteristic Dead Gen. names!\033[1;m"
+
+
+        print "Name, Sex, Age, number alive today"
+        rank = 1
+        for name, value in sorted(filtered_groups_F[i].items(), key=lambda x: x[1][-1], reverse=True):
+            sex = 'F'
+            age = max(years) - int(value[0])
+            print '%d. %s, %s, %d, %d' %(rank, name, sex, age, value[-1])
+            rank +=1
+        if sorted(filtered_groups_F[i].items()) == []:
+            print 'F: NONE'
+            
+        print 
+        rank = 1
+        for name, value in sorted(filtered_groups_M[i].items(), key=lambda x: x[1][-1], reverse=True):
+            sex = 'M'
+            age = max(years) - int(value[0])
+            print '%d. %s, %s, %d, %d' %(rank, name, sex, age, value[-1])
+            rank +=1
+        if sorted(filtered_groups_M[i].items()) == []:
+            print 'M: NONE'
+        i+=1
+        if i > 10:
+            return None
+    
 
 
 if __name__ == '__main__':
